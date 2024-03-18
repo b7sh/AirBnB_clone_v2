@@ -123,7 +123,7 @@ class HBNBCommand(cmd.Cmd):
             for arg in list_args[1:]:
                 new_args = arg.split("=")
                 new_args[1] = eval(new_args[1])
-                if isinstance(new_args[1], str):
+                if type(new_args[1]) is str:
                     new_args[1] = new_args[1].replace("_", " ").replace('"', '\\"')
                 val[new_args[0]] = new_args[1]
         except SyntaxError:
