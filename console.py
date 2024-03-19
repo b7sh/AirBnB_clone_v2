@@ -128,7 +128,7 @@ class HBNBCommand(cmd.Cmd):
             key, value = arg.split("=")
             if value[0] == '"' and value[-1] == '"':
                 value = value[1:-1]
-                value = value.replace('\\"', '"')
+                value = value.replace('"', '\\"')
                 value = value.replace("_", " ")
             else:
                 try:
@@ -222,10 +222,11 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage.all(HBNBCommand.classes[args]).items():
-                print_list.append(str(v))
+            for k, v in storage._FileStorage__objects.items():
+                if k.split('.')[0] == args:
+                    print_list.append(str(v))
         else:
-            for k, v in storage.all().items():
+            for k, v in storage._FileStorage__objects.items():
                 print_list.append(str(v))
 
         print(print_list)
