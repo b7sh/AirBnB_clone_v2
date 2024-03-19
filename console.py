@@ -128,7 +128,6 @@ class HBNBCommand(cmd.Cmd):
             key, value = arg.split("=")
             if value[0] == '"' and value[-1] == '"':
                 value = value[1:-1]
-                value = value.replace('"', '\\"')
                 value = value.replace("_", " ")
             else:
                 try:
