@@ -14,18 +14,3 @@ class State(BaseModel, Base):
     name = Column(String(128), nullable=False)
     cities = relationship("City", cascade='all, delete, delete-orphan',
                           backref="state")
-    
-    @property
-    def cities(self):
-        variable = models.storage.all()
-        all_list = []
-        re = []
-        for k in variable:
-            city = k.replace('.', ' ')
-            city = shlex.split(city)
-            if(city[0] == 'City'):
-                all_list.append(variable[k])
-        for ele in all_list:
-            if (ele.state_id == self.id):
-                re.append(ele)
-        return re
