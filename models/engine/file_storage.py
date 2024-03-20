@@ -64,7 +64,5 @@ class FileStorage:
         delete an existing element
         '''
         if obj:
-            k = "{}.{}".format(
-                type(obj).__name__, obj.id
-            )
+            k = "{}.{}".format(type(obj).__name__, obj.id)
             del self.__objects[k]
