@@ -15,6 +15,7 @@ from models.review import Review
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
 
+    # determines prompt for interactive/non-interactive modes
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
     classes = {
@@ -30,7 +31,7 @@ class HBNBCommand(cmd.Cmd):
             }
 
     def preloop(self):
-        """Prints if not isatty"""
+        """Prints if isatty is false"""
         if not sys.__stdin__.isatty():
             print('(hbnb)')
 
@@ -72,7 +73,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] == '{' and pline[-1] == '}'\
+                    if pline[0] == '{' and pline[-1] =='}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -114,22 +115,29 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        try:
-            if not args:
-                raise SyntaxError()
-            list_args = args.split(" ")
-            ka = {}
-            for arg in list_args[1:]:
-                new_args = arg.split("=")
-                new_args[1] = eval(new_args[1])
-                if type(new_args[1]) is str:
-                    new_args[1] = new_args[1].replace("_", " ").replace('"', '\\"')
-                ka[new_args[0]] = new_args[1]
-        except SyntaxError:
+        if not args:
             print("** class name missing **")
-        except NameError:
+            return False
+        list_args = args.split(" ")
+        class_name = list_args[0]
+        if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
-        new_instance = HBNBCommand.classes[list_args[0]](**ka)
+            return False
+        new_instance = HBNBCommand.classes[class_name]()
+        for arg in list_args[1:]:
+            key, value = arg.split("=")
+            if value[0] == '"' and value[-1] == '"':
+                value = value[1:-1]
+                value = value.replace("_", " ")
+            else:
+                try:
+                    if '.' in value:
+                        value = float(value)
+                    else:
+                        value = int(value)
+                except Exception:
+                    continue
+        setattr(new_instance, key, value)
         new_instance.save()
         print(new_instance.id)
 
@@ -213,11 +221,13 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage.all(HBNBCommand.classes[args]).items():
-                print_list.append(str(v))
+            for k, v in storage._FileStorage__objects.items():
+                if k.split('.')[0] == args:
+                    print_list.append(str(v))
         else:
-            for k, v in storage.all().items():
+            for k, v in storage._FileStorage__objects.items():
                 print_list.append(str(v))
+
         print(print_list)
 
     def help_all(self):
