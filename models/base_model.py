@@ -13,8 +13,8 @@ Base = declarative_base()
 class BaseModel:
     """A base class for all hbnb models"""
     id = Column(String(60), primary_key=True)
-    created_at = Column(DateTime, nullable=False, default=(datetime.utcnow()))
-    updated_at = Column(DateTime, nullable=False, default=(datetime.utcnow()))
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
+    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
 
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
@@ -39,6 +39,10 @@ class BaseModel:
         return '[{}] ({}) {}'.format(
             type(self).__name__, self.id, self.__dict__)
 
+    def __repr__(self):
+        """ string representaiton """
+        return self.__str__()
+ 
     def save(self):
         """Updates updated_at with current time when instance is changed"""
         self.updated_at = datetime.now()

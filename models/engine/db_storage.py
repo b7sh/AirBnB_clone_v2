@@ -21,15 +21,16 @@ class DBStorage:
     __session = None
     def __init__(self):
         user = getenv("HBNB_MYSQL_USER")
-        password = getenv("HBNB_MYSQL_PWD")
+        passwd = getenv("HBNB_MYSQL_PWD")
         host = getenv("HBNB_MYSQL_HOST ")
         db = getenv("HBNB_MYSQL_DB")
         env = getenv("HBNB_ENV")
 
-        self.__engine = create_engine(
-            'mysql+mysqldb://{}:{}@{}/{}'
-            .format(user, password, host, db),
-            pool_pre_ping=True)
+        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'
+            .format(user, passwd, host, db), pool_pre_ping=True)
+
+        if env == "test":
+            Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
         """
@@ -58,13 +59,13 @@ class DBStorage:
     def new(self, obj):
         """ add new element to the table """
         if obj:
-            self.session.add(obj)
+            self.__session.add(obj)
 
     def save(self):
         """
             save the new table
         """
-        self.session.commit()
+        self.__session.commit()
 
     def delete(self, obj=None):
         """ delete an element from the table """
