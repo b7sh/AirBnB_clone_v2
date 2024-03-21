@@ -7,7 +7,7 @@ from models.review import Review
 from sqlalchemy.orm import relationship
 
 
-class User(BaseModel, Base):
+class User(Base, BaseModel):
     """This class defines a user by various attributes"""
     __tablename__ = "users"
     email = Column(String(128), nullable=False)
