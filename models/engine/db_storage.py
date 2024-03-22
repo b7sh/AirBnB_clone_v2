@@ -43,8 +43,6 @@ class DBStorage:
         """
         all_dict = {}
         if cls:
-            if type(cls) is str:
-                cls = eval(cls)
             query = self.__session.query(cls)
             for ele in query:
                 k = "{}.{}".format(type(ele).__name__, ele.id)

@@ -126,10 +126,10 @@ class HBNBCommand(cmd.Cmd):
         new_instance = HBNBCommand.classes[class_name]()
         for arg in list_args[1:]:
             kv = arg.split("=")
-            value = kv[0]
+            key = kv[0]
             if len(kv) != 2:
                 continue
-            key = kv[1]
+            value = kv[1]
             if value[0] == '"' and value[-1] == '"':
                 value = value[1:-1]
                 value = value.replace("_", " ")
