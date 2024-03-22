@@ -7,16 +7,7 @@ from os import getenv
 import models
 
 
-amenity_place = Table("place_amenity", Base.metadata,
-                    Column("place_id", String(60),
-                             ForeignKey("places.id"),
-                             primary_key=True),
-                    Column("amenity_id", String(60),
-                           ForeignKey("amenities.id"),
-                           primary_key=True))
-
-
-class Place(BaseModel):
+class Place(BaseModel, Base):
     """ A place to stay """
     __tablename__ = "places"
     city_id = Column(String(60), ForeignKey("cities.id"), nullable=False)
@@ -30,9 +21,3 @@ class Place(BaseModel):
     latitude = Column(Float)
     longitude = Column(Float)
     amenity_ids = []
-
-    if getenv("HBNB_TYPE_STORAGE") == "db":
-        reviews = relationship("Review", cascade='all, delete, delete-orphan',
-                               backref="place")
-        amenities = relationship("Amenity", cascade='all, delete, delete-orphan',
-                               backref="place_amenities")
