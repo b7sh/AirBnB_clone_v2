@@ -10,7 +10,7 @@ sudo mkdir -p /data/web_static/shared/
 sudo mkdir -p /data/web_static/releases/test/
 
 # Create a fake HTML file
-sudo echo "<html>
+echo "<html>
   <head>
   </head>
   <body>
@@ -29,4 +29,3 @@ sudo sed -i "26i \\\tlocation /hbnb_static/ {\n\t\talias /data/web_static/curren
 
 # restart nginx to aplly the changes
 sudo service nginx restart
-
