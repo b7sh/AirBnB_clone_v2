@@ -10,33 +10,23 @@ env.hosts = ['52.90.0.95', '54.237.79.170']
 env.user = 'ubuntu'
 
 
-def do_pack():
-    """ generate a .tgz archive """
-    t_now = datetime.now().strftime("%Y%m%d%H%M%S")
-    path = "versions/web_static_{}.tgz".format(t_now)
-    local("mkdir -p versions")
-    archeive = local("tar -cvzf {} web_static".format(path))
-    if archeive.return_code != 0:
-        return None
-    else:
-        return path
-
-
 def do_deploy(archive_path):
     """ distributes an archive to your web servers """
     if os.path.exists(archive_path):
-        path = archive_path.split('/')[1]
-        c_path = "/tmp/{}".format(path)
-        fol = path.split('.')[0]
-        fol_path = "/data/web_static/releases/{}/".format(fol)
+        try:
+            path = archive_path.split('/')[-1]
+            c_path = "/tmp/{}".format(path)
+            fol = path.split('.')[0]
+            fol_path = "/data/web_static/releases/"
 
-        put(archive_path, c_path)
-        run("mkdir -p {}".format(fol_path))
-        run("tar -xzf {} -C {}".format(c_path, fol_path))
-        run("rm {}".format(f_p))
-        run("mv -f {}web_static/* {}".format(fol_path, fol_path))
-        run("rm -rf {}web_static".format(fol_path))
-        run("rm -rf /data/web_static/current")
-        run("ln -s {} /data/web_static/current".format(fol_path))
-        return True
-    return False
+            put(archive_path, '/tmp/')
+            run("mkdir -p {}{}/".format(fol_path, fol))
+            run("tar -xzf /tmp/{} -C {}{}/".format(path, fol_path, fol))
+            run("rm /tmp/{}".format(path))
+            run("mv {0}{1}/web_static/* {0}{1}/".format(fol_path, fol))
+            run("rm -rf {}{}/web_static".format(fol_path, fol))
+            run("rm -rf /data/web_static/current")
+            run("ln -s {}{}/ /data/web_static/current".format(fol_path, fol))
+            return True
+        except:
+            return False
