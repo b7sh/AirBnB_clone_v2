@@ -1,8 +1,6 @@
 #!/usr/bin/python3
-# a Fabric script (based on the file 1-pack_web_static.py)
-# +that distributes an archive to your web servers,
-# +using the function do_deploy
-from fabric.api import run, env, local, put
+# reates and distributes an archive to your web servers
+from fabric.api import run, put, local, env
 from datetime import datetime
 import os
 
@@ -39,3 +37,11 @@ def do_deploy(archive_path):
         run("ln -s {}{}/ /data/web_static/current".format(fol_path, fol))
         return True
     return False
+
+
+def deploy():
+    """ reates and distributes an archive """
+    archive_path = do_pack()
+    if archive_path is None:
+        return False
+    return do_deploy(archive_path)
