@@ -5,6 +5,7 @@ from datetime import datetime
 import os
 
 env.hosts = ['54.237.79.170', '52.90.0.95']
+env.user = 'ubuntu'
 
 
 def do_pack():
@@ -22,18 +23,19 @@ def do_pack():
 def do_deploy(archive_path):
     """ distributes an archive to your web servers """
     if os.path.exists(archive_path):
-        path = archive_path.split('/')[-1]
-        fol = path.split('.')[0]
-        fol_path = "/data/web_static/releases/"
+        arch = archive_path.split('/')[1]
+        a_p = "/tmp/{}".format(arch)
+        fol = arch.split('.')[0]
+        fol_path = "/data/web_static/releases/{}/".format(fol)
 
-        put(archive_path, '/tmp/')
-        run("mkdir -p {}{}/".format(fol_path, fol))
-        run("tar -xzf /tmp/{} -C {}{}/".format(path, fol_path, fol))
-        run("rm /tmp/{}".format(path))
-        run("mv {0}{1}/web_static/* {0}{1}/".format(fol_path, fol))
-        run("rm -rf {}{}/web_static".format(fol_path, fol))
+        put(archive_path, a_p)
+        run("mkdir -p {}".format(fol_path))
+        run("tar -xzf {} -C {}".format(a_p, fol_path))
+        run("rm {}".format(a_p))
+        run("mv -f {}web_static/* {}/".format(fol_path, fol_path))
+        run("rm -rf {}web_static".format(fol_path))
         run("rm -rf /data/web_static/current")
-        run("ln -s {}{}/ /data/web_static/current".format(fol_path, fol))
+        run("ln -s {} /data/web_static/current".format(fol_path))
         return True
     return False
 
