@@ -24,7 +24,9 @@ def do_pack():
 
 def do_deploy(archive_path):
     """ distributes an archive to your web servers """
-    if os.path.exists(archive_path):
+    if os.path.exists(archive_path) is False:
+        return False
+    try:
         path = archive_path.split('/')[-1]
         fol = path.split('.')[0]
         fol_path = "/data/web_static/releases/"
@@ -38,4 +40,5 @@ def do_deploy(archive_path):
         run("rm -rf /data/web_static/current")
         run("ln -s {}{}/ /data/web_static/current".format(fol_path, fol))
         return True
-    return False
+    except:
+        return False
