@@ -28,10 +28,10 @@ def do_deploy(archive_path):
         arch = archive_path.split('/')[1]
         a_p = "/tmp/{}".format(arch)
         fol = arch.split('.')[0]
-        fol_path = "/data/web_static/releases/"
+        fol_path = "/data/web_static/releases/{}/".format(fol)
 
         put(archive_path, a_p)
-        run("mkdir -p {}".format(fol_path)
+        run("mkdir -p {}".format(fol_path))
         run("tar -xzf {} -C {}".format(a_p, fol_path))
         run("rm {}".format(a_p))
         run("mv -f {}web_static/* {}/".format(fol_path, fol_path))
