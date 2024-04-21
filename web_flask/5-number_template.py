@@ -45,8 +45,7 @@ def value(n=None):
         display "n is a number" only if
         the type of n is integer
     '''
-    if isinstance(n, int):
-        return render_template("5-number.html", n=n)
+    return render_template("5-number.html", n=n)
 
 
 if __name__ == "__main__":
