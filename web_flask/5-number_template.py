@@ -18,29 +18,29 @@ def hbnb():
     return "HBNB"
 
 
-# @app.route("/python/", defaults={'text': 'is_cool'}, strict_slashes=False)
-# @app.route("/python/<text>", strict_slashes=False)
-# def value(text):
-#     '''
-#         display "Python" ” followed by
-#         the value of the text variable
-#     '''
-#     text = text.replace("_", " ")
-#     return "Python {}".format(text)
+@app.route("/python/", defaults={'text': 'is_cool'}, strict_slashes=False)
+@app.route("/python/<text>", strict_slashes=False)
+def python_text(text):
+    '''
+        display "Python" ” followed by
+        the value of the text variable
+    '''
+    text = text.replace("_", " ")
+    return "Python {}".format(text)
 
 
-# @app.route("/number/<int:n>", strict_slashes=False)
-# def value(n):
-#     '''
-#         display "n is a number" only if
-#         the type of n is integer
-#     '''
-#     if isinstance(n, int):
-#         return "{} is a number".format(n)
+@app.route("/number/<int:n>", strict_slashes=False)
+def number(n):
+    '''
+        display "n is a number" only if
+        the type of n is integer
+    '''
+    if isinstance(n, int):
+        return "{} is a number".format(n)
 
 
 @app.route("/number_template/<int:n>", strict_slashes=False)
-def value(n=None):
+def template(n=None):
     '''
         display "n is a number" only if
         the type of n is integer
