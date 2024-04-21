@@ -40,7 +40,7 @@ def hbnb():
 
 
 @app.route("/number_template/<int:n>", strict_slashes=False)
-def value(n):
+def value(n=None):
     '''
         display "n is a number" only if
         the type of n is integer
