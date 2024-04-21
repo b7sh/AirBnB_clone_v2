@@ -29,13 +29,12 @@ def hbnb():
 #     return "Python {}".format(text)
 
 
-@app.route("/number/<n>", strict_slashes=False)
+@app.route("/number/<int:n>", strict_slashes=False)
 def value(n):
     '''
         display "n is a number" only if
         the type of n is integer
     '''
-    n = int(n)
     if isinstance(n, int):
         return "{} is a number".format(n)
 
